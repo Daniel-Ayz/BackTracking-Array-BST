@@ -54,12 +54,14 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             }
             count--;
         }
+        else
+            throw new RuntimeException("the index isn't in the array");
     }
 
     @Override
     public Integer minimum() {
         if (count==0)
-            return -1;
+            throw new RuntimeException("empty array");
         int minIndex=0;
         int min=arr[0];
         int i=1;
@@ -75,20 +77,49 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer maximum() {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if (count==0)
+            throw new RuntimeException("empty array");
+        int maxIndex=0;
+        int max=arr[0];
+        int i=1;
+        while(i<count){
+            if(max<arr[i]){
+                max=arr[i];
+                maxIndex=i;
+            }
+            i++;
+        }
+        return maxIndex;
     }
 
     @Override
     public Integer successor(Integer index) {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if(count==0)
+            throw new RuntimeException("empty array");
+        int number=arr[index];
+        int successor=maximum();
+        if(successor==number)
+            throw new RuntimeException("no successor");
+        for(int i=0;i<count;i++){
+            if(number<arr[i] && arr[i]<successor)
+                successor=arr[i];
+        }
+        return successor;
     }
 
     @Override
     public Integer predecessor(Integer index) {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if(count==0)
+            throw new RuntimeException("empty array");
+        int number=arr[index];
+        int predecessor=minimum();
+        if(predecessor==number)
+            throw new RuntimeException("no predecessor");
+        for(int i=0;i<count;i++){
+            if(predecessor<arr[i] && arr[i]<number)
+                predecessor=arr[i];
+        }
+        return predecessor;
     }
 
     @Override
