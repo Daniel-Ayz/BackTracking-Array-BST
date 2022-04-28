@@ -22,6 +22,8 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer search(int k) {
+        if(count==0)
+            return -1;
         return binarySearch(0,count,k);
     }
 
