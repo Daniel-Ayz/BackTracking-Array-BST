@@ -1,4 +1,4 @@
-import java.util.Collections;
+package Assignment2;
 
 public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     private Stack stack;
@@ -73,10 +73,10 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     }
 
     private void shiftRight(Integer index){
-        if(0<=index && index<count){
+        if(0<=index && index<=count){
             int j=count;
             while(index<j) {
-                arr[j-1]=arr[j];
+                arr[j]=arr[j-1];
                 j--;
             }
             count++;
@@ -85,7 +85,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
             throw new RuntimeException("the index isn't in the array");
     }
 
-    public int sortedIndex(Integer value) {
+    private int sortedIndex(Integer value) {
         int low = 0,
                 high = count;
         while (low < high) {
@@ -102,28 +102,28 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     public Integer minimum() {
         if (count==0)
             throw new RuntimeException("empty array");
-        return arr[0];
+        return 0;
     }
 
     @Override
     public Integer maximum() {
         if (count==0)
             throw new RuntimeException("empty array");
-        return arr[count-1];
+        return count-1;
     }
 
     @Override
     public Integer successor(Integer index) {
-        if(index+1==count)
+        if(index<0 || count<=index+1)
             throw new RuntimeException("no successor");
-        return arr[index+1];
+        return index+1;
     }
 
     @Override
     public Integer predecessor(Integer index) {
-        if(index==0)
+        if(index-1<0 || count<=index)
             throw new RuntimeException("no predecessor");
-        return arr[index-1];
+        return index-1;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         if(!stack.isEmpty()){
             int[] re= (int[])stack.pop(); //stack-> re={delete=0/insert=1 , index , value}
             if(re[0]==0){ //ctrl+Z->delete
-                shiftRight(arr[1]);
+                shiftRight(re[1]);
                 arr[re[1]]=re[2];
             }
             else{ //ctrl+Z->insert
@@ -149,6 +149,11 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     @Override
     public void print() {
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
         String str="";
         for(int i=0;i<count;i++){
             if(str=="")
@@ -156,6 +161,6 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
             else
                 str=str+" "+arr[i];
         }
-        System.out.println(str);
+        return str;
     }
 }

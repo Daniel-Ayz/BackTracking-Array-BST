@@ -1,4 +1,6 @@
+package Assignment2;
 
+import java.util.Arrays;
 
 public class BacktrackingArray implements Array<Integer>, Backtrack {
     private Stack stack;
@@ -93,30 +95,40 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     public Integer successor(Integer index) {
         if(count==0)
             throw new RuntimeException("empty array");
+        if(index<0 || count<=index)
+            throw new RuntimeException("index out of bound");
         int number=arr[index];
-        int successor=maximum();
+        int successorIndex=maximum();
+        int successor=arr[successorIndex];
         if(successor==number)
             throw new RuntimeException("no successor");
         for(int i=0;i<count;i++){
-            if(number<arr[i] && arr[i]<successor)
+            if(number<arr[i] && arr[i]<successor){
                 successor=arr[i];
+                successorIndex=i;
+            }
         }
-        return successor;
+        return successorIndex;
     }
 
     @Override
     public Integer predecessor(Integer index) {
         if(count==0)
             throw new RuntimeException("empty array");
+        if(index<0 || count<=index)
+            throw new RuntimeException("index out of bound");
         int number=arr[index];
-        int predecessor=minimum();
+        int predecessorIndex=minimum();
+        int predecessor=arr[predecessorIndex];
         if(predecessor==number)
             throw new RuntimeException("no predecessor");
         for(int i=0;i<count;i++){
-            if(predecessor<arr[i] && arr[i]<number)
+            if(predecessor<arr[i] && arr[i]<number) {
                 predecessor=arr[i];
+                predecessorIndex = i;
+            }
         }
-        return predecessor;
+        return predecessorIndex;
     }
 
     //stack-> re={delete=0/insert=1 , index , value}
@@ -127,6 +139,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             if(re[0]==0){ //ctrl+Z->delete
                 arr[count]=arr[re[1]];
                 arr[re[1]]=re[2];
+                count++;
             }
             else{ //ctrl+Z->insert
                 count--;
@@ -143,6 +156,11 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public void print() {
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
         String str="";
         for(int i=0;i<count;i++){
             if(str=="")
@@ -150,7 +168,6 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             else
                 str=str+" "+arr[i];
         }
-        System.out.println(str);
+        return str;
     }
-    
 }

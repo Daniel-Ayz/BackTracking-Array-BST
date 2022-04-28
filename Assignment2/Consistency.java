@@ -1,3 +1,5 @@
+package Assignment2;
+
 public class Consistency {
 
 	public static int[] incosistencies = {0,1,0,0,2,0,0,0,0,0,0,0,0,0,0,0};
