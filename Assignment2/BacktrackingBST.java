@@ -27,21 +27,35 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void insert(Node node) {
-        // TODO: implement your code here
+        if(node==null)
+            throw new RuntimeException("node null");
+        if(root==null)
+            root=node;
+        else
+            root.insert(node);
     }
 
     public void delete(Node node) {
-        // TODO: implement your code here
+        if(node==null)
+            throw new RuntimeException("node null");
+        if(node==root)
+            root=null;
+        else
+            node.delete();
     }
 
     public Node minimum() {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if(root==null)
+            throw new RuntimeException("empty tree");
+        else
+            return root.minimum();
     }
 
     public Node maximum() {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if(root==null)
+            throw new RuntimeException("empty tree");
+        else
+            return root.maximum();
     }
 
     public Node successor(Node node) {
@@ -51,8 +65,9 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public Node predecessor(Node node) {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if(node==null)
+            throw new RuntimeException("empty node");
+        return node.predecessor();
     }
 
     @Override
@@ -66,7 +81,8 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void printPreOrder(){
-        // TODO: implement your code here
+        if(root!=null)
+            System.out.println(root.preOrder());
     }
 
     @Override
@@ -117,6 +133,89 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
 
         public Object getValue() {
             return value;
+        }
+
+        public Node minimum(){
+            if(left==null)
+                return this;
+            else
+                return left.minimum();
+        }
+
+        public Node maximum(){
+            if(right==null)
+                return this;
+            else
+                return right.maximum();
+        }
+
+        public Node predecessor(){
+            if(left!=null)
+                return left.maximum();
+            else{
+                Node child=this;
+                Node p=parent;
+                while(p!=null && p.left==this){
+                    child=p;
+                    p=p.parent;
+                }
+                return p;
+            }
+        }
+
+        public String preOrder(){
+            String str=((Integer)key).toString();
+            if(left!=null)
+                str+=" "+left.preOrder();
+            if(right!=null)
+                str+=" "+right.preOrder();
+            return str;
+        }
+
+        public void insert(Node node){
+            if(key<node.key){
+                if(right==null)
+                    right=node;
+                else
+                    right.insert(node);
+            }
+            else{
+                if(left==null)
+                    left=node;
+                else
+                    left.insert(node);
+            }
+        }
+
+        public void delete(){
+            if(left==null && right==null){ //no children
+                if(parent.left==this)
+                    parent.left=null;
+                else
+                    parent.right=null;
+            }
+            else if(left==null){  //only right child
+                if(parent.left==this)
+                    parent.left=right;
+                else
+                    parent.right=right;
+            }
+            else if(right==null){  //only left child
+                if(parent.left==this)
+                    parent.left=left;
+                else
+                    parent.right=left;
+            }
+            else{ //2 children
+                Node successor=minimum();
+                successor.delete();
+                successor.left=left;
+                successor.right=right;
+                if(parent.left==this)
+                    parent.left=successor;
+                else
+                    parent.right=successor;
+            }
         }
         
     }
