@@ -21,8 +21,9 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 	
     public Node search(int k) {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if (root == null)
+            return null;
+        return root.search(k);
     }
 
     public void insert(Node node) {
@@ -44,8 +45,9 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public Node successor(Node node) {
-        // TODO: implement your code here
-    	return null; // temporal return command to prevent compilation error
+        if (node == null)
+            throw new RuntimeException("empty node");
+    	return node.successor();
     }
 
     public Node predecessor(Node node) {
@@ -84,6 +86,29 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         public Node(int key, Object value) {
             this.key = key;
             this.value = value;
+        }
+
+        public Node search(int k){
+            if (getKey() == k)
+                return this;
+            if (getKey() > k)
+                return left.search(k);
+            if (getKey() < k)
+                return right.search(k);
+            return null;
+        }
+
+        public Node successor(){
+            if (right != null)
+                return right.minimum();
+            Node child = this;
+            Node p = parent;
+            while (p != null && child == p.right){
+                child = p;
+                p = p.parent;
+            }
+
+            return p;
         }
 
         public int getKey() {

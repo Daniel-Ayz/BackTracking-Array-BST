@@ -97,17 +97,21 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             throw new RuntimeException("empty array");
         if(index<0 || count<=index)
             throw new RuntimeException("index out of bound");
+
         int number=arr[index];
-        int successorIndex=maximum();
-        int successor=arr[successorIndex];
-        if(successor==number)
-            throw new RuntimeException("no successor");
+        int successorIndex = 0;
+        int successor = Integer.MAX_VALUE;
+
         for(int i=0;i<count;i++){
             if(number<arr[i] && arr[i]<successor){
                 successor=arr[i];
-                successorIndex=i;
+                successorIndex = i;
             }
         }
+
+        if(successor==Integer.MAX_VALUE)
+            throw new RuntimeException("no successor");
+
         return successorIndex;
     }
 
@@ -117,17 +121,21 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             throw new RuntimeException("empty array");
         if(index<0 || count<=index)
             throw new RuntimeException("index out of bound");
+
         int number=arr[index];
-        int predecessorIndex=minimum();
-        int predecessor=arr[predecessorIndex];
-        if(predecessor==number)
-            throw new RuntimeException("no predecessor");
+        int predecessorIndex = 0;
+        int predecessor = Integer.MIN_VALUE;
+
         for(int i=0;i<count;i++){
             if(predecessor<arr[i] && arr[i]<number) {
                 predecessor=arr[i];
                 predecessorIndex = i;
             }
         }
+
+        if(predecessor==Integer.MIN_VALUE)
+            throw new RuntimeException("no predecessor");
+
         return predecessorIndex;
     }
 
