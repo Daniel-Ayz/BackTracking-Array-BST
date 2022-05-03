@@ -39,7 +39,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         if(node==null)
             throw new RuntimeException("node null");
         if(node==root)
-            root=null;
+            root=root.delete();
         else
             node.delete();
     }
@@ -174,20 +174,25 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
 
         public void insert(Node node){
             if(key<node.key){
-                if(right==null)
+                if(right==null){
                     right=node;
+                    node.parent = this;
+                }
                 else
                     right.insert(node);
             }
             else{
-                if(left==null)
-                    left=node;
+                if(left==null) {
+                    left = node;
+                    node.parent = this;
+                }
                 else
                     left.insert(node);
             }
         }
 
-        public void delete(){
+        public Node delete(){
+            Node toReturn = null;
             if(left==null && right==null){ //no children
                 if(parent.left==this)
                     parent.left=null;
@@ -195,27 +200,38 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                     parent.right=null;
             }
             else if(left==null){  //only right child
-                if(parent.left==this)
-                    parent.left=right;
-                else
-                    parent.right=right;
+                if (parent != null) {
+                    if (parent.left == this)
+                        parent.left = right;
+                    else
+                        parent.right = right;
+                }
+                toReturn = right;
             }
             else if(right==null){  //only left child
-                if(parent.left==this)
-                    parent.left=left;
-                else
-                    parent.right=left;
+                if (parent != null) {
+                    if (parent.left == this)
+                        parent.left = left;
+                    else
+                        parent.right = left;
+                }
+                toReturn = left;
             }
             else{ //2 children
-                Node successor=minimum();
+                Node successor=right.minimum();
                 successor.delete();
                 successor.left=left;
                 successor.right=right;
-                if(parent.left==this)
-                    parent.left=successor;
-                else
-                    parent.right=successor;
+                if (parent != null) {
+                    if (parent.left == this)
+                        parent.left = successor;
+                    else
+                        parent.right = successor;
+                }
+                toReturn = successor;
             }
+
+            return toReturn;
         }
         
     }
