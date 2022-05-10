@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args) {
 //        check4l1();
 //        check4l2();
-       check4l3();
-        //check4l32();
+//         check4l3();
+        check4l32();
 
     }
     public static void check4l1() {

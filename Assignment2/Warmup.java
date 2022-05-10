@@ -10,7 +10,7 @@ public class Warmup {
                 myStack.push(arr[index]);
                 index++;
             }
-            for(int j=0;j<back;j++){
+            for(int j=0;j<back && index<arr.length;j++){
                 if(arr[index]==x)
                     return index;
                 myStack.pop();
@@ -28,5 +28,6 @@ public class Warmup {
 
     	return -987; // temporal return command to prevent compilation error
     }
+
     
 }
