@@ -21,13 +21,33 @@ public class Warmup {
     }
 
     public static int consistentBinSearch(int[] arr, int x, Stack myStack) {
-        // TODO: implement your code here
 
-    	// Your implementation should contain a this line:
-    	int inconsistencies = Consistency.isConsistent(arr);
+        int low = 0, high = arr.length - 1;
+        while (low <= high){
+            int middle = low+(high-low)/2;
 
-    	return -987; // temporal return command to prevent compilation error
+            myStack.push(low);
+            myStack.push(middle);
+            myStack.push(high);
+
+            if(arr[middle] == x) {
+                return middle;
+            }
+            else if (x < arr[middle])
+                high = middle-1;
+            else
+                low = middle+1;
+
+            int inconsistencies = Consistency.isConsistent(arr);
+            int undoCount = 0;
+            while (undoCount < inconsistencies){
+                high = (int)myStack.pop();
+                middle = (int)myStack.pop();
+                low = (int)myStack.pop();
+                undoCount++;
+            }
+        }
+        return -1;
     }
-
     
 }
